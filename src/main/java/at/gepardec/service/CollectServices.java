@@ -5,14 +5,16 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Dependent
 public class CollectServices {
 
     Logger Log;
 
-    private List<String> serviceURLList = new ArrayList<>();
+    private Map<String, String> serviceURLMap = new HashMap<>();                                    // Map<Env-Variable, URL>
 
     private String ms_env_base;
     private String ms_env_variables;
@@ -27,31 +29,30 @@ public class CollectServices {
         this.ms_env_variables = variables;
         this.Log = Log;
         initServices();
-        Log.info(getEnvVariables());
         logServiceURLs();
     }
 
+    /*
+        initialize Map of environment-variables + values
+     */
     public void initServices() {
-        String env;
-        for (String s : ms_env_variables.split(",")) {
-            env = System.getenv(ms_env_base + s);       // not working; getting null;
-            Log.info("result for " + ms_env_base + s + ": " + env);
-            serviceURLList.add(env);
+        String env;                                                                                 // environment-variable
+        String url;                                                                                 // URL stored in environment-variable
+        for (String variable : ms_env_variables.split(",")) {                                 // iterate all env-Variables
+            env = ms_env_base + variable;
+            url = System.getenv(env);                                                               // get value of environment-variable
+            serviceURLMap.put(env, url);
         }
     }
 
-    public List<String> getServiceURLList() {
-        return serviceURLList;
-    }
-
-    public String getEnvVariables() {
-        return "Environment-Variable: " + ms_env_base + ms_env_variables;
+    public List<String> getServiceURLs() {
+        return new ArrayList<>(serviceURLMap.values());
     }
 
     public void logServiceURLs() {
         Log.info("ServiceURLs: ");
-        for(String s : getServiceURLList()) {
-            Log.info(s);
+        for(String s : serviceURLMap.keySet()) {
+            Log.info(s + ": " + serviceURLMap.get(s));
         }
     }
 }

@@ -28,15 +28,15 @@ public class EntrypointResource {
 
     @GET
     @Path("/start")
-    public void callRandomServices() throws InterruptedException {
+    @Produces(MediaType.TEXT_PLAIN)
+    public String callRandomServices() throws InterruptedException {
         Thread.sleep(idletime);
-        if(count < 10) {
+        if (count < 10) {
             Log.info("Calling Random service #" + ++count);
-            randomCallService.callRandomService();
+            return randomCallService.callRandomService();
         }
         Log.info("Stopping RandomCallService...");
-        //return "Random CallService stopped...";
-
+        return "Random CallService stopped...";
 
 
     }

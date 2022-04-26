@@ -14,19 +14,19 @@ public class RandomCallService {
     @Inject
     Logger Log;
 
-    private int countPorts;
+    private int countServices;
 
     Random rand = new Random();
 
-    CollectServicePorts portCollection;
+    CollectServices serviceCollection;
 
-    public RandomCallService(CollectServicePorts portCollection) {
-        this.portCollection = portCollection;
+    public RandomCallService(CollectServices serviceCollection) {
+        this.serviceCollection = serviceCollection;
         initCallService();
     }
 
     public void initCallService() {
-        countPorts = portCollection.getPortList().size();
+        countServices = serviceCollection.getServiceURLList().size();
     }
 
     public String callRandomService() {
@@ -34,12 +34,14 @@ public class RandomCallService {
     }
 
     public MiddlemanService getRandomService() {
-        int port = portCollection.getPortList().get(getRandomPort());
-        return RestClientBuilder.newBuilder().baseUri(URI.create("http://localhost:" + port)).build(MiddlemanService.class);
+        String service = serviceCollection.getServiceURLList().get(getRandom());
+        Log.info("getRandomService: service: " + service);
+        return RestClientBuilder.newBuilder().baseUri(URI.create(service)).build(MiddlemanService.class);
     }
 
-    public int getRandomPort() {
-        return rand.nextInt(countPorts);
+    public int getRandom() {
+        Log.info("getRandom(): countServiices: " + countServices);
+        return rand.nextInt(countServices -1) + 1;
     }   // Todo: Hash/Seed mitgeben, damit Random Durchlauf nochmal rekonstruiert werden kann.
 
 

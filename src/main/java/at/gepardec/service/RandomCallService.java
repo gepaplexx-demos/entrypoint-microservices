@@ -6,6 +6,7 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Random;
 
@@ -21,7 +22,8 @@ public class RandomCallService {
 
     CollectServices serviceCollection;
 
-    public RandomCallService(CollectServices serviceCollection, @ConfigProperty(name = "microservices.seed") Long seed) {
+    public RandomCallService(CollectServices serviceCollection,
+                             @ConfigProperty(name = "microservices.seed") Long seed) {
         this.serviceCollection = serviceCollection;
         initCallService();
         rand = new Random(seed);
@@ -31,18 +33,22 @@ public class RandomCallService {
         countServices = serviceCollection.getServiceURLs().size();
     }
 
-    public String callRandomService() {
-        return getRandomService().getResource();
+    public Response callRandomService(int ttl) {
+        Log.info("ttl_entry: " + ttl);
+        return getRandomService().getResource(ttl);
     }
 
     public MiddlemanService getRandomService() {
         String service = serviceCollection.getServiceURLs().get(getRandom());
         Log.info("Service: " + service);
-        return RestClientBuilder.newBuilder().baseUri(URI.create(service)).build(MiddlemanService.class);
+        return RestClientBuilder
+                .newBuilder()
+                .baseUri(URI.create(service))
+                .build(MiddlemanService.class);
     }
 
     public int getRandom() {
-        return rand.nextInt(countServices - 1) + 1;                                            // returns values of interval [1 ; #services-1]
+        return rand.nextInt(countServices - 1) + 1;                                           // returns values of interval [1 ; #services-1]
     }
 
 

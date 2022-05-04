@@ -18,37 +18,38 @@ public class RandomCallService {
 
     private int countServices;
 
-    Random rand;
+    Random random;
+    Long seed;
 
-    CollectServices serviceCollection;
+    ServiceCollector serviceCollection;
 
-    public RandomCallService(CollectServices serviceCollection,
+    public RandomCallService(ServiceCollector serviceCollection,
                              @ConfigProperty(name = "microservices.seed") Long seed) {
         this.serviceCollection = serviceCollection;
-        initCallService();
-        rand = new Random(seed);
-    }
-
-    public void initCallService() {
-        countServices = serviceCollection.getServiceURLs().size();
+        this.seed = seed;
+        this.countServices = serviceCollection.getServiceURLs().size();
+        random = new Random(seed);
     }
 
     public Response callRandomService(int ttl) {
-        Log.info("ttl_entry: " + ttl);
         return getRandomService().getResource(ttl);
     }
 
     public MiddlemanService getRandomService() {
-        String service = serviceCollection.getServiceURLs().get(getRandom());
-        Log.info("Service: " + service);
+        String url = getRandomUrl();
+        Log.info("Service: " + url);
         return RestClientBuilder
                 .newBuilder()
-                .baseUri(URI.create(service))
+                .baseUri(URI.create(url))
                 .build(MiddlemanService.class);
     }
 
-    public int getRandom() {
-        return rand.nextInt(countServices - 1) + 1;                                           // returns values of interval [1 ; #services-1]
+    public String getRandomUrl() {
+        return serviceCollection.getServiceURLs().get(getRandomNr());
+    }
+
+    public int getRandomNr() {
+        return random.nextInt(countServices);                                           // returns values of interval [0 ; #services-1]
     }
 
 

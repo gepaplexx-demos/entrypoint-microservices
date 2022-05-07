@@ -31,8 +31,8 @@ public class RandomCallService {
         random = new Random(seed);
     }
 
-    public Response callRandomService(int ttl) {
-        return getRandomService().getResource(ttl);
+    public void callRandomService(int ttl) {
+        getRandomService().getResource(ttl);
     }
 
     public MiddlemanService getRandomService() {

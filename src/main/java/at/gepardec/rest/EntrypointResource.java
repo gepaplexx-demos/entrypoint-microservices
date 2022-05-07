@@ -30,20 +30,20 @@ public class EntrypointResource {
     @GET
     @Path("/start/{ttl}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response startRandomCallService(int ttl)     //Todo: annotation pathparameter?
+    public void startRandomCallService(int ttl)     //Todo: annotation pathparameter?
             throws InterruptedException {
 
         Thread.sleep(idletime);
-        return callRandomService(ttl);
+        callRandomService(ttl);
     }
 
-    public Response callRandomService(int ttl) {
+    public void callRandomService(int ttl) {
         if (ttl > 0) {
             Log.info("Calling Random service #" + ++count);
-            return randomCallService.callRandomService(ttl);
+            randomCallService.callRandomService(ttl);
         }
         Log.info("Stopping RandomCallService...");
-        return Response.status(200).entity("Random Call-Service stopped...").build();
+        //return Response.status(200).entity("Random Call-Service stopped...").build();
     }
 
 }

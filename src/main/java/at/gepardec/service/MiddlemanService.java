@@ -15,6 +15,6 @@ public interface MiddlemanService {
     @GET
     @Path("/call/service")
     @Produces(MediaType.TEXT_PLAIN)
-    Response getResource(@QueryParam("ttl") int ttl);
+    void getResource(@QueryParam("ttl") int ttl);
 
 }

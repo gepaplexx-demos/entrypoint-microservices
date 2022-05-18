@@ -1,4 +1,4 @@
-package at.gepardec;
+package at.gepardec.demo;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

@@ -10,9 +10,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.UUID;
 
-@Path("/")
+@Path("/test")
 @ApplicationScoped
 public class EntrypointResource {
 
@@ -33,14 +33,16 @@ public class EntrypointResource {
     public void startRandomCallService(int ttl)     //Todo: annotation pathparameter?
             throws InterruptedException {
 
+        UUID transactionID = UUID.randomUUID();
+        Log.info("Sleeping for " + idletime + " ms");
         Thread.sleep(idletime);
-        callRandomService(ttl);
+        callRandomService(ttl, transactionID);
     }
 
-    public void callRandomService(int ttl) {
+    public void callRandomService(int ttl, UUID transactionID) {
         if (ttl > 0) {
-            Log.info("Calling Random service #" + ++count);
-            randomCallService.callRandomService(ttl);
+            Log.info("TransactionID: " + transactionID.toString() + " - Calling Random service #" + ++count);
+            randomCallService.callRandomService(ttl, transactionID);
         }
         Log.info("Stopping RandomCallService...");
         //return Response.status(200).entity("Random Call-Service stopped...").build();

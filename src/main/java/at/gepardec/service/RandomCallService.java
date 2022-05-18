@@ -1,5 +1,7 @@
 package at.gepardec.service;
 
+import io.smallrye.common.annotation.NonBlocking;
+import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.jboss.logging.Logger;
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Random;
+import java.util.UUID;
 
 @Dependent
 public class RandomCallService {
@@ -31,8 +34,9 @@ public class RandomCallService {
         random = new Random(seed);
     }
 
-    public void callRandomService(int ttl) {
-        getRandomService().getResource(ttl);
+    @NonBlocking
+    public void callRandomService(int ttl, UUID transactionID) {
+        getRandomService().getResource(ttl, transactionID);
     }
 
     public MiddlemanService getRandomService() {

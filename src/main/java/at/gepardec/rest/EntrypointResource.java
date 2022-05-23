@@ -39,7 +39,7 @@ public class EntrypointResource {
             throws InterruptedException {
 
         UUID transactionID = UUID.randomUUID();
-        Log.info("Sleeping for " + idletime + " ms");
+        Log.info("[" + transactionID.toString() + "]" + " Sleeping for " + idletime + " ms");
         Thread.sleep(idletime);
         callRandomService(ttl, transactionID);
     }
@@ -49,7 +49,7 @@ public class EntrypointResource {
             Log.info("TransactionID: " + transactionID.toString() + " - Calling Random service #" + ++count);
             randomCallService.callRandomService(ttl, transactionID);
         }
-        Log.info("Stopping RandomCallService...");
+        Log.info("["+transactionID.toString()+"]" + " Stopping RandomCallService...");
         //return Response.status(200).entity("Random Call-Service stopped...").build();
     }
 

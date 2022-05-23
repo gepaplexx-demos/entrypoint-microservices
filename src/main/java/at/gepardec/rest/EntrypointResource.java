@@ -33,8 +33,8 @@ public class EntrypointResource {
     @GET
     @Path("/start/{ttl}")
     @Produces(MediaType.TEXT_PLAIN)
-    @Counted(name = "performedChecks", description = "How often the service has been called.")
-    @Timed(name = "checksTimer", description = "A measure of how long it takes to perform the complete call.", unit = MetricUnits.MILLISECONDS)
+    @Counted(name = "performedCalls", description = "How often the service has been called.")
+    @Timed(name = "callsTimer", description = "A measure of how long it takes to perform the complete call.", unit = MetricUnits.MILLISECONDS)
     public void startRandomCallService(int ttl)     //Todo: annotation pathparameter?
             throws InterruptedException {
 

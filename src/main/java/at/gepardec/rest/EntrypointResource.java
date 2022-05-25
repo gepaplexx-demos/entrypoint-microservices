@@ -34,8 +34,6 @@ public class EntrypointResource {
     @Inject
     ServiceCollector serviceCollector;
 
-    RandomCallService randomCallService = new RandomCallService(serviceCollector.getServiceURLs(), seed);
-
     @GET
     @Path("/start/{ttl}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -53,6 +51,7 @@ public class EntrypointResource {
     public void callRandomService(int ttl, UUID transactionID) {
         if (ttl > 0) {
             Log.info("TransactionID: " + transactionID.toString() + " - Calling Random service #" + ++count);
+            RandomCallService randomCallService = new RandomCallService(serviceCollector.getServiceURLs(), seed);
             randomCallService.callRandomService(ttl, transactionID);
         }
         Log.info("["+transactionID.toString()+"]" + " Stopping RandomCallService...");

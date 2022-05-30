@@ -3,6 +3,7 @@ package at.gepardec.service;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.jboss.logging.Logger;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.net.URI;
 import java.util.List;
 import java.util.Random;
@@ -17,9 +18,10 @@ public class RandomCallService {
 
     List<String> serviceCollection;
 
-    public RandomCallService(List<String> serviceCollection, Long seed) {
+    public RandomCallService(List<String> serviceCollection, Random random) {
         this.serviceCollection = serviceCollection;
-        random = new Random(seed);
+        this.random = random;
+
     }
 
     public void callRandomService(int ttl, UUID transactionID) {

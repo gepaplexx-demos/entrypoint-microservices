@@ -11,6 +11,7 @@ import org.jboss.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -39,7 +40,7 @@ public class EntrypointResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Counted(name = "performedCalls", description = "How often the service has been called.")
     @Timed(name = "callsTimer", description = "A measure of how long it takes to perform the complete call.", unit = MetricUnits.MILLISECONDS)
-    public void startRandomCallService(int ttl)     //Todo: annotation pathparameter?
+    public void startRandomCallService(int ttl)
             throws InterruptedException {
 
         UUID transactionID = UUID.randomUUID();
@@ -55,7 +56,6 @@ public class EntrypointResource {
             randomCallService.callRandomService(ttl, transactionID);
         }
         Log.info("["+transactionID.toString()+"]" + " Stopping RandomCallService...");
-        //return Response.status(200).entity("Random Call-Service stopped...").build();
     }
 
 }

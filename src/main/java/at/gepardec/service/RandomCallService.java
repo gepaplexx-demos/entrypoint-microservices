@@ -35,8 +35,7 @@ public class RandomCallService {
     }
 
     public String getRandomUrl() {
-        int countServices = serviceCollection.size();
-        return serviceCollection.get(random.nextInt(countServices));
+        return serviceCollection.get(random.nextInt(serviceCollection.size()));
     }
 
 }

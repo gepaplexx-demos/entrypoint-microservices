@@ -1,46 +1,34 @@
 package at.gepardec.service;
 
-import io.smallrye.common.annotation.NonBlocking;
-import io.smallrye.mutiny.Uni;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import javax.enterprise.context.ApplicationScoped;
 import java.net.URI;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@Dependent
+
 public class RandomCallService {
 
-    @Inject
-    Logger Log;
-
-    private int countServices;
+    Logger Log = Logger.getLogger(RandomCallService.class);
 
     Random random;
-    Long seed;
 
-    ServiceCollector serviceCollection;
+    List<String> serviceCollection;
 
-    public RandomCallService(ServiceCollector serviceCollection,
-                             @ConfigProperty(name = "microservices.seed") Long seed) {
+    public RandomCallService(List<String> serviceCollection, Random random) {
         this.serviceCollection = serviceCollection;
-        this.seed = seed;
-        this.countServices = serviceCollection.getServiceURLs().size();
-        random = new Random(seed);
+        this.random = random;
+
     }
 
-    @NonBlocking
     public void callRandomService(int ttl, UUID transactionID) {
-        getRandomService().getResource(ttl, transactionID);
+        getService(getRandomUrl()).getNextResource(ttl, transactionID);
     }
 
-    public MiddlemanService getRandomService() {
-        String url = getRandomUrl();
+    public MiddlemanService getService(String url) {
         Log.info("Service: " + url);
         return RestClientBuilder
                 .newBuilder()
@@ -49,12 +37,7 @@ public class RandomCallService {
     }
 
     public String getRandomUrl() {
-        return serviceCollection.getServiceURLs().get(getRandomNr());
+        return serviceCollection.get(random.nextInt(serviceCollection.size()));
     }
-
-    public int getRandomNr() {
-        return random.nextInt(countServices);                                           // returns values of interval [0 ; #services-1]
-    }
-
 
 }

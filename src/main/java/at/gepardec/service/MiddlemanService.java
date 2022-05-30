@@ -17,4 +17,10 @@ public interface MiddlemanService {
     @Produces(MediaType.TEXT_PLAIN)
     void getNextResource(@QueryParam("ttl") int ttl,
                          @QueryParam("transactionID") UUID transactionID);
+
+    @GET
+    @Path("/call/serviceBySequence")
+    @Produces(MediaType.TEXT_PLAIN)
+    void getNextResourceBySequence(@QueryParam("orderSequence") String orderSequence,
+                         @QueryParam("transactionID") UUID transactionID);
 }

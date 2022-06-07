@@ -10,8 +10,7 @@ import java.util.UUID;
 
 public class OrderedCallService {
 
-    Logger Log = Logger.getLogger(RandomCallService.class);
-
+    Logger Log = Logger.getLogger(OrderedCallService.class);
 
     List<String> serviceCollection;
 

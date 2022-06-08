@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: alerts-demo-services
+  namespace: alex-demo-services
 spec:
   groups:
     - name: alerts-demo-services

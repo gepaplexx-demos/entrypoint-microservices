@@ -2,7 +2,6 @@ package at.gepardec.rest;
 
 import at.gepardec.service.OrderedCallService;
 import at.gepardec.service.ServiceCollector;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;

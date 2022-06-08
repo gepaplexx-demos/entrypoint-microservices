@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alerts-demo-services
+  namespace: alex-demo-services
+spec:
+  groups:
+    - name: alerts-demo-services
+      rules:
+        - alert: AllThreeDeplyomentsAreAvailable
+          expr: absent(sum(kube_deployment_status_condition{condition="Available", namespace="alex-demo-services",status="true"}) >=3)
+          for: 2m #beobachte fuer 2 Minuten (pending)
+          labels:
+            severity: info
+          annotations:
+            description: "Demo Service Deplyoment nicht verfügbar"
+            summary: "Alle Drei Deplyoments sollten verfügbar sein"

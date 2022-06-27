@@ -9,7 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.UUID;
 
 @RegisterRestClient
 @RegisterClientHeaders(UuidPropagationClientHeadersFactory.class)
@@ -23,6 +22,5 @@ public interface MiddlemanService {
     @GET
     @Path("/call/serviceBySequence")
     @Produces(MediaType.TEXT_PLAIN)
-    void getNextResourceBySequence(@QueryParam("sequence") String sequence,
-                         @QueryParam("transactionID") UUID transactionID);
+    void getNextResourceBySequence(@QueryParam("sequence") String sequence);
 }

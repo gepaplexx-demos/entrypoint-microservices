@@ -5,7 +5,6 @@ import org.jboss.logging.Logger;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 
 public class OrderedCallService {
@@ -18,8 +17,8 @@ public class OrderedCallService {
         this.serviceCollection = serviceCollection;
     }
 
-    public void callNextService(String orderSequence, UUID transactionID) {
-        getService(getUrl()).getNextResourceBySequence(orderSequence, transactionID);
+    public void callNextService(String orderSequence) {
+        getService(getUrl()).getNextResourceBySequence(orderSequence);
     }
 
     public MiddlemanService getService(String url) {

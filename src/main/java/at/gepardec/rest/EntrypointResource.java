@@ -13,7 +13,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.UUID;
 
 @Path("/")
 @ApplicationScoped
@@ -31,19 +30,18 @@ public class EntrypointResource {
     @Counted(name = "performedCalls", description = "How often the service has been called.")
     @Timed(name = "callsTimer", description = "A measure of how long it takes to perform the complete call.", unit = MetricUnits.MILLISECONDS)
     public void startOrderedCallService(String sequence) {
-        UUID transactionID = UUID.randomUUID();
-        processRequest(sequence, transactionID);
+        processRequest(sequence);
     }
 
-    public void processRequest(String orderSequence, UUID transactionID) {
+    public void processRequest(String orderSequence) {
         if (orderSequence.length() == 0) {
-            Log.info("[" + transactionID.toString() + "]" + " Abort starting of OrderedCallService due to empty sequence...");
+            Log.info("Abort starting of OrderedCallService due to empty sequence...");
             return;
         }
-        Log.info("[" + transactionID.toString() + "]" + " - Starting CallService");
+        Log.info("Starting CallService");
         OrderedCallService orderedCallService = new OrderedCallService(serviceCollector.getServiceURLs());
-        orderedCallService.callNextService(orderSequence, transactionID);
-        Log.info("[" + transactionID.toString() + "]" + " Stopping OrderedCallService...\n\n");
+        orderedCallService.callNextService(orderSequence);
+        Log.info("Stopping OrderedCallService...\n\n");
     }
 
 }

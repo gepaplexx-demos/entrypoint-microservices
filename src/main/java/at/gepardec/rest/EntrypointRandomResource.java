@@ -16,7 +16,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Random;
-import java.util.UUID;
 
 @Path("/")
 @ApplicationScoped
@@ -51,20 +50,18 @@ public class EntrypointRandomResource {
     public void startRandomCallService(int ttl)
             throws InterruptedException {
 
-
-        UUID transactionID = UUID.randomUUID();
-        Log.info("[" + transactionID.toString() + "]" + " Sleeping for " + idletime + " ms");
+        Log.info(" Sleeping for " + idletime + " ms");
         Thread.sleep(idletime);
-        callRandomService(ttl, transactionID);
+        callRandomService(ttl);
     }
 
-    public void callRandomService(int ttl, UUID transactionID) {
+    public void callRandomService(int ttl) {
         if (ttl > 0) {
-            Log.info("TransactionID: " + transactionID.toString() + " - Calling Random service #" + ++count);
+            Log.info("Calling Random service #" + ++count);
             RandomCallService randomCallService = new RandomCallService(serviceCollector.getServiceURLs(), random);
-            randomCallService.callRandomService(ttl, transactionID);
+            randomCallService.callRandomService(ttl);
         }
-        Log.info("["+transactionID.toString()+"]" + " Stopping RandomCallService...");
+        Log.info("Stopping RandomCallService...");
     }
 
 }

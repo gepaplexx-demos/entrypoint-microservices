@@ -25,7 +25,7 @@ public class OrderedCallService {
     }
 
     public MiddlemanService getService(String url) {
-        Log.info("Service: " + url);
+        Log.info(" Service: " + url);
         return RestClientBuilder
                 .newBuilder()
                 .baseUri(URI.create(url))

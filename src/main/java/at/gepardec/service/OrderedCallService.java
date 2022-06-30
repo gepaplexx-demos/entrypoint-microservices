@@ -13,8 +13,11 @@ public class OrderedCallService {
 
     List<String> serviceCollection;
 
-    public OrderedCallService(List<String> serviceCollection) {
+    int idletime;
+
+    public OrderedCallService(List<String> serviceCollection, int idletime) {
         this.serviceCollection = serviceCollection;
+        this.idletime = idletime;
     }
 
     public void callNextService(String orderSequence) {
